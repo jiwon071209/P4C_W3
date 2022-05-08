@@ -7,10 +7,23 @@
 	if(!$login) {
 	?> <script type="text/javascript">
 			alert("로그인을 해주세요 !");
+			location.href = "login.html";
 	   </script>
 	<?php
 	exit;
 	}
+	
+	if(empty($_SESSION['mail'])) {
+		$sql = "SELECT email FROM login WHERE id = '$login'";
+		$result = mysqli_query($connect,$sql);
+		$data = mysqli_fetch_array($result);
+
+		$mail_adress = $data['email'];
+
+		header("Location: http://localhost/P4C_W1-master/sendmail.php?mail={$mail_adress}");	
+
+	}
+
 	
 ?>
 
@@ -29,7 +42,7 @@
 	  
 	}
 
-	input {
+	.search_button {
 	  width: 100%;
 	  border: 1px solid #bbb;
 	  border-radius: 8px;
@@ -43,6 +56,7 @@
 	</style>
 </head>
 <body>
+	
 	<h1>자유게시판</h1>
 	<p>
 		<form action="search.php" method="post">
@@ -52,10 +66,9 @@
 					<option value="contents">내용</option>
 					<option value="all">전체</option>
 				</select>
-  				<input type="text" placeholder="검색어 입력" name="search">
+  				<input type="text" class = "search_button" placeholder="검색어 입력" name="search">
 			</div>
 		</form>
-		
 	</p>
 	
 	<table width="800">
